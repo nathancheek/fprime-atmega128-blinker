@@ -23,8 +23,8 @@ Svc::RateGroupDriver::DividerSet rateGroupDivisors{{{1, 0}, {10, 0}}};
 
 // Rate groups may supply a context token to each of the attached children whose purpose is set by the project. The
 // reference topology sets each token to zero as these contexts are unused in this project.
-U32 rateGroup10HzContext[FppConstant_PassiveRateGroupOutputPorts::PassiveRateGroupOutputPorts] = {};
-U32 rateGroup1HzContext[FppConstant_PassiveRateGroupOutputPorts::PassiveRateGroupOutputPorts] = {};
+Svc::PassiveRateGroup::ContextArray rateGroup10HzContext(0);
+Svc::PassiveRateGroup::ContextArray rateGroup1HzContext(0);
 
 /**
  * \brief configure/setup components in project-specific way
@@ -38,8 +38,8 @@ void configureTopology() {
     rateGroupDriver.configure(rateGroupDivisors);
 
     // Rate groups require context arrays.
-    rateGroup10Hz.configure(rateGroup10HzContext, FW_NUM_ARRAY_ELEMENTS(rateGroup10HzContext));
-    rateGroup1Hz.configure(rateGroup1HzContext, FW_NUM_ARRAY_ELEMENTS(rateGroup1HzContext));
+    rateGroup10Hz.configure(rateGroup10HzContext);
+    rateGroup1Hz.configure(rateGroup1HzContext);
 
     gpioDriver.open(Arduino::DEF_LED_BUILTIN, Arduino::GpioDriver::GpioDirection::OUT);
 }

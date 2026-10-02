@@ -9,7 +9,7 @@ module LedBlinker {
       rateGroup1Hz
     }
 
-  topology LedBlinker {
+  deployment topology LedBlinker {
 
     # ----------------------------------------------------------------------
     # Subtopology imports

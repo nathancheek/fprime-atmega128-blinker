@@ -14,11 +14,15 @@ module ComFprimeConfig {
         constant comQueue   = 101
     }
 
+    module CpuAffinities {
+        constant comQueue   = Os.TASK_DEFAULT
+    }
+
     # Queue configuration constants
     module QueueDepths {
-        constant events      = 10            
-        constant tlm         = 25            
-        constant file        = 1           
+        constant events      = 10             
+        constant tlm         = 25             
+        constant file        = 1             
     }
 
     module QueuePriorities {
@@ -29,11 +33,11 @@ module ComFprimeConfig {
 
     # Buffer management constants
     module BuffMgr {
-        constant frameAccumulatorSize  = 256     
-        constant commsBuffSize         = 140      
-        constant commsFileBuffSize     = 0      
-        constant commsBuffCount        = 3      
-        constant commsFileBuffCount    = 0        
+        constant frameAccumulatorSize  = 256      
+        constant commsBuffSize         = 140       
+        constant commsFileBuffSize     = 0         
+        constant commsBuffCount        = 3       
+        constant commsFileBuffCount    = 0         
         constant commsBuffMgrId        = 200      
     }
 }
