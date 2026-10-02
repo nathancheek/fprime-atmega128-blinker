@@ -28,7 +28,7 @@ namespace LedBlinker {
      */
     struct TopologyState {
         FwIndexType uartNumber;
-        PlatformIntType uartBaud;
+        U32 uartBaud;  // U32: int is 16-bit on AVR, too small for 115200
     };
 }  // namespace LedBlinker
 
@@ -55,6 +55,6 @@ namespace PingEntries {
     namespace LedBlinker_tlmSend {enum { WARN = 3, FATAL = 5 };}
     namespace LedBlinker_cmdDisp {enum { WARN = 3, FATAL = 5 };}
     namespace LedBlinker_eventLogger {enum { WARN = 3, FATAL = 5 };}
-    namespace LedBlinker_rateGroup1 {enum { WARN = 3, FATAL = 5 };}
+    namespace LedBlinker_rateGroup10Hz {enum { WARN = 3, FATAL = 5 };}
 }  // namespace PingEntries
 #endif
