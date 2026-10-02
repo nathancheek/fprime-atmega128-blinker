@@ -39,7 +39,7 @@ extern "C" {
 // Allow objects to have names. Allocates storage for each instance
 #ifndef FW_OBJECT_NAMES
 #define FW_OBJECT_NAMES \
-    1  //!< Indicates whether or not object names are stored (more memory, can be used for tracking objects)
+    0  //!< Indicates whether or not object names are stored (more memory, can be used for tracking objects)
 #endif
 
 // To reduce binary size, FW_OPTIONAL_NAME(<string>) can be used to substitute strings with an empty string
@@ -65,11 +65,11 @@ extern "C" {
 // centrally.
 #ifndef FW_OBJECT_REGISTRATION
 #define FW_OBJECT_REGISTRATION \
-    1  //!< Indicates whether or not objects can register themselves (more code, more object tracking)
+    0  //!< Indicates whether or not objects can register themselves (more code, more object tracking)
 #endif
 
 #ifndef FW_QUEUE_REGISTRATION
-#define FW_QUEUE_REGISTRATION 1  //!< Indicates whether or not queue registration is used
+#define FW_QUEUE_REGISTRATION 0  //!< Indicates whether or not queue registration is used
 #endif
 
 // On some systems, use of *printf family functions (snprintf, printf, etc) require a prohibitive amount of program
@@ -84,13 +84,13 @@ extern "C" {
 
 // This allows tracing calls through ports for debugging
 #ifndef FW_PORT_TRACING
-#define FW_PORT_TRACING 1  //!< Indicates whether port calls are traced (more code, more visibility into execution)
+#define FW_PORT_TRACING 0  //!< Indicates whether port calls are traced (more code, more visibility into execution)
 #endif
 
 // This generates code to connect to serialized ports
 #ifndef FW_PORT_SERIALIZATION
 #define FW_PORT_SERIALIZATION \
-    1  //!< Indicates whether there is code in ports to serialize the call (more code, but ability to serialize calls
+    0  //!< Indicates whether there is code in ports to serialize the call (more code, but ability to serialize calls
        //!< for multi-note systems)
 #endif
 
@@ -123,7 +123,7 @@ extern "C" {
 //
 // Note: users who want alternate asserts should set assert level to FW_NO_ASSERT and define FW_ASSERT in this header
 #ifndef FW_ASSERT_LEVEL
-#define FW_ASSERT_LEVEL FW_RELATIVE_PATH_ASSERT  //!< Defines the type of assert used
+#define FW_ASSERT_LEVEL FW_FILEID_ASSERT  //!< Defines the type of assert used
 #endif
 
 // Adjust various configuration parameters in the architecture. Some of the above enables may disable some of the values
@@ -209,7 +209,7 @@ extern "C" {
 
 // Specifies the size of the buffer that contains the serialized telemetry value.
 #ifndef FW_TLM_BUFFER_MAX_SIZE
-#define FW_TLM_BUFFER_MAX_SIZE 12 + sizeof(FwChanIdType) + sizeof(FwPacketDescriptorType) // (FW_COM_BUFFER_MAX_SIZE - sizeof(FwChanIdType) - sizeof(FwPacketDescriptorType))
+#define FW_TLM_BUFFER_MAX_SIZE (FW_COM_BUFFER_MAX_SIZE - sizeof(FwChanIdType) - sizeof(FwPacketDescriptorType))
 #endif
 
 // Specifies the size of the buffer that contains statement args for the FpySequencer
@@ -245,7 +245,7 @@ extern "C" {
 // Enables text logging of events as well as data logging. Adds a second logging port for text output.
 // In order to set this to 0, FPRIME_ENABLE_TEXT_LOGGERS must be set to OFF.
 #ifndef FW_ENABLE_TEXT_LOGGING
-#define FW_ENABLE_TEXT_LOGGING 1  //!< Indicates whether text logging is turned on
+#define FW_ENABLE_TEXT_LOGGING 0  //!< Indicates whether text logging is turned on
 #endif
 
 // Define the size of the text log string buffer. Should be large enough for format string and arguments
@@ -256,7 +256,7 @@ extern "C" {
 // Define if serializables have toString() method. Turning off will save code space and
 // string constants. Must be enabled if text logging enabled
 #ifndef FW_SERIALIZABLE_TO_STRING
-#define FW_SERIALIZABLE_TO_STRING 1  //!< Indicates if autocoded serializables have toString() methods
+#define FW_SERIALIZABLE_TO_STRING 0  //!< Indicates if autocoded serializables have toString() methods
 #endif
 
 // Some settings to enable AMPCS compatibility. This breaks regular ISF GUI compatibility

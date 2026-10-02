@@ -5,7 +5,8 @@ module LedBlinker {
   # ----------------------------------------------------------------------
 
     enum Ports_RateGroups {
-      rateGroup1
+      rateGroup10Hz
+      rateGroup1Hz
     }
 
   topology LedBlinker {
@@ -25,10 +26,9 @@ module LedBlinker {
     instance eventLogger
     instance fatalHandler
     instance rateDriver
-    instance rateGroup1
+    instance rateGroup10Hz
+    instance rateGroup1Hz
     instance rateGroupDriver
-    instance systemResources
-    instance textLogger
     instance timeHandler
     instance tlmSend
     instance led
@@ -44,8 +44,6 @@ module LedBlinker {
 
     telemetry connections instance tlmSend
 
-    text event connections instance textLogger
-
     time connections instance timeHandler
 
     # ----------------------------------------------------------------------
@@ -53,14 +51,16 @@ module LedBlinker {
     # ----------------------------------------------------------------------
 
     connections RateGroups {
-      # Block driver
+      # Timer1 overflow-based interrupt. Rate groups run from the main loop.
       rateDriver.CycleOut -> rateGroupDriver.CycleIn
 
-      # Rate group 1
-      rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup1] -> rateGroup1.CycleIn
-      rateGroup1.RateGroupMemberOut[0] -> comDriver.schedIn
-      rateGroup1.RateGroupMemberOut[1] -> tlmSend.Run
-      rateGroup1.RateGroupMemberOut[2] -> systemResources.run
+      # 10 Hz rate group: poll the ground UART for uplink
+      rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup10Hz] -> rateGroup10Hz.CycleIn
+      rateGroup10Hz.RateGroupMemberOut[0] -> comDriver.schedIn
+
+      # 1 Hz rate group: keep downlink traffic low enough for the ComQueue to keep up
+      rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup1Hz] -> rateGroup1Hz.CycleIn
+      rateGroup1Hz.RateGroupMemberOut[0] -> tlmSend.Run
     }
 
     connections FaultProtection {
@@ -90,8 +90,8 @@ module LedBlinker {
     }
 
     connections LedConnections {
-      # Rate Group 1 (1Hz cycle) ouput is connected to led's run input
-      rateGroup1.RateGroupMemberOut[3] -> led.run
+      # Rate Group 1Hz output is connected to led's run input
+      rateGroup1Hz.RateGroupMemberOut[1] -> led.run
       # led's gpioSet output is connected to gpioDriver's gpioWrite input
       led.gpioSet -> gpioDriver.gpioWrite
     }
