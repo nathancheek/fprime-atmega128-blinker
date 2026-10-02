@@ -22,7 +22,7 @@
 
 #ifndef FPRIME_INTEGER_CONFIG_H
 #define FPRIME_INTEGER_CONFIG_H
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -32,8 +32,7 @@ extern "C" {
 // avr-gcc's double is 32 bits, so F64 is not IEEE-754 binary64. Avoid F64 in commands, events, and telemetry.
 #define SKIP_FLOAT_IEEE_754_COMPLIANCE 1  //!<  Check IEEE 754 compliance of floating point arithmetic
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif  // FPRIME_INTEGER_CONFIG_H
-

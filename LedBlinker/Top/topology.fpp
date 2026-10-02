@@ -61,6 +61,8 @@ module LedBlinker {
       # 1 Hz rate group: keep downlink traffic low enough for the ComQueue to keep up
       rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup1Hz] -> rateGroup1Hz.CycleIn
       rateGroup1Hz.RateGroupMemberOut[0] -> tlmSend.Run
+      # Since fprime v4.1, the command dispatcher only writes its telemetry from its run port
+      rateGroup1Hz.RateGroupMemberOut[2] -> cmdDisp.run
     }
 
     connections FaultProtection {
