@@ -6,7 +6,7 @@ module LedBlinker {
 
   module Default {
     constant QUEUE_SIZE = 3
-    constant STACK_SIZE = 64 * 1024
+    constant STACK_SIZE = 256 # Unused by the baremetal scheduler
   }
 
   # ----------------------------------------------------------------------
@@ -41,7 +41,9 @@ module LedBlinker {
   # Passive component instances
   # ----------------------------------------------------------------------
 
-  instance rateGroup1: Svc.PassiveRateGroup base id 0x1000
+  instance rateGroup10Hz: Svc.PassiveRateGroup base id 0x1000
+
+  instance rateGroup1Hz: Svc.PassiveRateGroup base id 0x1100
 
   instance comDriver: Arduino.StreamDriver base id 0x4000
 
@@ -50,10 +52,6 @@ module LedBlinker {
   instance timeHandler: Arduino.ArduinoTime base id 0x4400
 
   instance rateGroupDriver: Svc.RateGroupDriver base id 0x4500
-
-  instance textLogger: Svc.PassiveTextLogger base id 0x4600
-
-  instance systemResources: Svc.SystemResources base id 0x4800
 
   instance rateDriver: Arduino.HardwareRateDriver base id 0x4900
 

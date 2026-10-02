@@ -15,12 +15,16 @@
 // Allows easy reference to objects in FPP/autocoder required namespaces
 using namespace LedBlinker;
 
-// The reference topology divides the incoming clock signal (1Hz) into sub-signals: 1/100Hz, 1/200Hz, and 1/1000Hz
-Svc::RateGroupDriver::DividerSet rateGroupDivisors{{{100, 0}, {200, 0}, {1000, 0}}};
+// Base tick of the system, driven by the Timer1 interrupt
+static constexpr U32 BASE_TICK_MS = 100;
+
+// The rate group driver divides the 10Hz base tick into sub-signals: 10Hz and 1Hz
+Svc::RateGroupDriver::DividerSet rateGroupDivisors{{{1, 0}, {10, 0}}};
 
 // Rate groups may supply a context token to each of the attached children whose purpose is set by the project. The
 // reference topology sets each token to zero as these contexts are unused in this project.
-U32 rateGroup1Context[FppConstant_PassiveRateGroupOutputPorts::PassiveRateGroupOutputPorts] = {};
+U32 rateGroup10HzContext[FppConstant_PassiveRateGroupOutputPorts::PassiveRateGroupOutputPorts] = {};
+U32 rateGroup1HzContext[FppConstant_PassiveRateGroupOutputPorts::PassiveRateGroupOutputPorts] = {};
 
 /**
  * \brief configure/setup components in project-specific way
@@ -34,7 +38,8 @@ void configureTopology() {
     rateGroupDriver.configure(rateGroupDivisors);
 
     // Rate groups require context arrays.
-    rateGroup1.configure(rateGroup1Context, FW_NUM_ARRAY_ELEMENTS(rateGroup1Context));
+    rateGroup10Hz.configure(rateGroup10HzContext, FW_NUM_ARRAY_ELEMENTS(rateGroup10HzContext));
+    rateGroup1Hz.configure(rateGroup1HzContext, FW_NUM_ARRAY_ELEMENTS(rateGroup1HzContext));
 
     gpioDriver.open(Arduino::DEF_LED_BUILTIN, Arduino::GpioDriver::GpioDirection::OUT);
 }
@@ -60,8 +65,10 @@ void setupTopology(const TopologyState& state) {
     // Autocoded task kick-off (active components). Function provided by autocoder.
     startTasks(state);
     
-    rateDriver.configure(1);
-    comDriver.configure(&Serial);
+    rateDriver.configure(BASE_TICK_MS);
+    // Ground link on UART1. UART0 is used for programming and console output.
+    Serial1.begin(state.uartBaud);
+    comDriver.configure(&Serial1);
     rateDriver.start();
 }
 
