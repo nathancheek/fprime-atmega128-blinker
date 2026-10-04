@@ -28,7 +28,10 @@ module LedBlinker {
     stack size Default.STACK_SIZE \
     priority 97
 
-
+  instance led: LedBlinker.Led base id 0x0E00 \
+    queue size Default.QUEUE_SIZE \
+    stack size Default.STACK_SIZE \
+    priority 95
 
   # ----------------------------------------------------------------------
   # Queued component instances
@@ -52,5 +55,7 @@ module LedBlinker {
   instance rateGroupDriver: Svc.RateGroupDriver base id 0x4500
 
   instance rateDriver: Arduino.HardwareRateDriver base id 0x4900
+
+  instance gpioDriver: Arduino.GpioDriver base id 0x5000
 
 }
