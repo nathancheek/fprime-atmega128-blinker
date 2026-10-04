@@ -39,6 +39,8 @@ void configureTopology() {
     // Rate groups require context arrays.
     rateGroup10Hz.configure(rateGroup10HzContext);
     rateGroup1Hz.configure(rateGroup1HzContext);
+
+    gpioDriver.open(Arduino::DEF_LED_BUILTIN, Arduino::GpioDriver::GpioDirection::OUT);
 }
 
 // Public functions for use in main program are namespaced with deployment namespace LedBlinker

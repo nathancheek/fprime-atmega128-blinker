@@ -32,6 +32,8 @@ module LedBlinker {
     instance rateGroupDriver
     instance timeHandler
     instance tlmSend
+    instance led
+    instance gpioDriver
 
     # ----------------------------------------------------------------------
     # Pattern graph specifiers
@@ -94,6 +96,10 @@ module LedBlinker {
 
     connections LedBlinkerDeployment {
       # Add here connections to user-defined components
+      # Rate Group 1Hz output is connected to led's run input
+      rateGroup1Hz.RateGroupMemberOut[2] -> led.run
+      # led's gpioSet output is connected to gpioDriver's gpioWrite input
+      led.gpioSet -> gpioDriver.gpioWrite
     }
 
   }
